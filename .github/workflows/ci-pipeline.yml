@@ -1,0 +1,25 @@
+name: CI Build Pipeline
+
+#This tells GitHub WHEN to run the pipeline
+on:
+   push:
+     branches:
+      - main
+   pull_request:
+     branches:
+       - main
+
+
+#This tells GitHub WHAT to do
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      #Step 1: Download the code onto the temporary GitHub server
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+        #Step 2: Build the Docker image to make sure the code compiles correctly
+      - name: Build the Docker image
+        run: docker build -t test-build .
