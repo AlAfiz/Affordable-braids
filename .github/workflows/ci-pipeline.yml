@@ -20,6 +20,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Log in t Docker Hub
+       # This securely pipes your password into the docker login command
+        run: echo "${{ secrets.DOCKER_PASSWORD}}" | docker login -u "${{secrets.DOCKER_USERNAME}}"
+
         #Step 2: Build the Docker image to make sure the code compiles correctly
-      - name: Build the Docker image
-        run: docker build -t test-build .
+      - name: Build and Push Docker image
+        run: |
+          # We tag the image with your Docker username so Docker Hub knows it belongs to me
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/affordable-braids-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME}}/affordable-braids-app:latest
